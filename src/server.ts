@@ -3,6 +3,7 @@ import router from './router'
 import morgan from 'morgan'
 import cors from 'cors'
 import { protect } from './modules/auth'
+import { createNewUser, signIn } from './handlers/user'
 
 const app = express()
 
@@ -11,12 +12,6 @@ app.use(morgan('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-app.use((req, res, next) => {
-  // req.shhhSecret = 'hi'
-
-  res.status(401)
-  res.send('nah')
-})
 app.get('/', (req, res) => {
   console.log('hello from server')
   res.status(200)
@@ -24,5 +19,8 @@ app.get('/', (req, res) => {
 })
 
 app.use('/api', protect, router)
+
+app.post('/user', createNewUser)
+app.post('/signin', signIn)
 
 export default app
